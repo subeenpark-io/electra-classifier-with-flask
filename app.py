@@ -1,12 +1,13 @@
 #!/usr/bin/python3
 from flask import Flask, request, jsonify
 from sentiment import SentimentClassifier
+from krwordrank.sentence import summarize_with_sentences
 
 app = Flask(__name__)
 
 classifier = SentimentClassifier()
 
-@app.route('/predict', methods=["POST"])
+@app.route('/sentiment', methods=["POST"])
 def true_or_false():
     dataRecieve = request.get_json()
     user_input = dataRecieve["content"]
@@ -18,6 +19,16 @@ def true_or_false():
 @app.route('/ping')
 def ping():
     return "healthy"
+
+@app.route('/keyword')
+def keyword(texts):
+    keywords, sents = summarize_with_sentences(
+        texts,
+        diversity=0.5,
+        num_keywords=100,
+        num_keysents=10,
+        verbose=False
+    )
 
 
 if __name__=="__main__":
