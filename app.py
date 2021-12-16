@@ -15,6 +15,10 @@ def true_or_false():
         'sentiment': f'{classifier.predict(user_input)}',
     })
 
+@app.route('/ping')
+def ping():
+    return "healthy"
+
 
 if __name__=="__main__":
     app.run(host="0.0.0.0", port=8000)
