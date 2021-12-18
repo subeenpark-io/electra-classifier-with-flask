@@ -12,7 +12,7 @@ class SentimentClassifier():
 
 
     def __init__(self):
-        self.device = torch.device('cuda')
+        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.model = ElectraForSequenceClassification.from_pretrained("kykim/electra-kor-base",
                                                                       problem_type="multi_label_classification",
                                                                       num_labels=6).to(self.device)
