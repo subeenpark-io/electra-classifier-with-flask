@@ -18,9 +18,11 @@ def sentiment():
 
 @app.route('/ping')
 def ping():
-    return "healthy"
+    return jsonify({
+        'hi': 'HI',
+    })
 
-@app.route('/keyword')
+@app.route('/keyword', methods=["POST"])
 def keyword():
     dataRecieve = request.get_json()
     texts = [dataRecieve["text"]]
