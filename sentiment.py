@@ -10,10 +10,12 @@ class SentimentClassifier():
     ID_LABELS = {idx: key for (idx, key) in enumerate(LABELS)}
     MAX_LEN = 512
 
+
     def __init__(self):
+        self.device = torch.device('cuda')
         self.model = ElectraForSequenceClassification.from_pretrained("kykim/electra-kor-base",
                                                                       problem_type="multi_label_classification",
-                                                                      num_labels=6)
+                                                                      num_labels=6).to(self.device)
         self.tokenizer = ElectraTokenizerFast.from_pretrained("kykim/electra-kor-base")
         self.model.load_state_dict(torch.load("model.pt", map_location=torch.device('cpu')))
         # print(self.dataset.describe())
@@ -35,6 +37,6 @@ class SentimentClassifier():
 
     def predict(self, text):
         input_ids, attention_mask = self._get_prediction_input(text)
-        y_pred = self.model(input_ids.unsqueeze(0), attention_mask=attention_mask.unsqueeze(0))[0]
+        y_pred = self.model(input_ids.unsqueeze(0).to(self.device), attention_mask=attention_mask.unsqueeze(0).to(self.device))[0]
         _, predicted = torch.max(y_pred, 1)
         return SentimentClassifier.ID_LABELS[predicted.item()]
