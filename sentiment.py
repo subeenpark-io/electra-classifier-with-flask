@@ -17,7 +17,7 @@ class SentimentClassifier():
                                                                       problem_type="multi_label_classification",
                                                                       num_labels=6).to(self.device)
         self.tokenizer = ElectraTokenizerFast.from_pretrained("kykim/electra-kor-base")
-        self.model.load_state_dict(torch.load("model.pt", map_location=torch.device('cpu')))
+        self.model.load_state_dict(torch.load("model.pt"))
         # print(self.dataset.describe())
 
     def _get_prediction_input(self, text):
