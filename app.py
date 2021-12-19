@@ -15,9 +15,12 @@ def predict_sentiment_and_keywords():
     dataRecieve = request.get_json()
     user_input = dataRecieve["content"]
 
+    sentiment = classifier.predict(user_input)
+    keywords = keyword_extractor.extract_keywords(user_input)
+
     return jsonify({
-        'sentiment': f'{classifier.predict(user_input)}',
-        'keywords': f'{keyword_extractor.extract_keywords(user_input)}',
+        'sentiment': sentiment,
+        'keywords': keywords
     })
 
 @app.route('/ping')
